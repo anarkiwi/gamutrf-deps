@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS sigmf-builder
+FROM ubuntu:26.04 AS sigmf-builder
 ARG MARCH=-march=native
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential ca-certificates cmake git
@@ -13,5 +13,5 @@ RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${MAR
 WORKDIR /root/libsigmf/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${MARCH} -fno-semantic-interposition" -DUSE_SYSTEM_JSON=ON -DUSE_SYSTEM_FLATBUFFERS=ON .. && make -j "$(nproc)" && make install
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 COPY --from=sigmf-builder /usr/local /usr/local

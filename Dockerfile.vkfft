@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS vkfft-builder
+FROM ubuntu:26.04 AS vkfft-builder
 ARG MARCH=-march=native
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -13,7 +13,7 @@ RUN git clone --depth 1 https://github.com/DTolm/VkFFT -b v1.3.4
 WORKDIR /root/VkFFT/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${MARCH}" -DGLSLANG_GIT_TAG=13.0.0 .. && make -j "$(nproc)"
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 # TODO: ideally, should be packaged such that cmake can find it.
 # hadolint ignore=DL3008
 WORKDIR /root
